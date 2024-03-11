@@ -1,0 +1,18 @@
+<%= form_with(model: task, id: "#{dom_id(task)}_form") do |form| %>
+  <% if task.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 rounded-lg mb-3">
+      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+      <ul>
+        <% task.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex">
+    <%= form.text_field :name, class: 'w-full rounded-1 border-gray-300', placeholder: 'Task name', autocomplete: 'off' %>
+    <%= form.submit class: '-ml-px px-4 py-2 text-sm rounder-r text-white cursor-pointer bg-indigo-600 hover: bg-indigo-700' %>
+  </div>
+<% end %>
