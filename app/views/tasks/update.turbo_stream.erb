@@ -1,8 +1,11 @@
-<%= turbo_stream.remove "#{dom_id(@task)}_li" %>
-
-
-<% if @task.todo? %>
-  <%= turbo_stream.append 'tasks', partial: 'tasks/task', locals: { task: @task } %>
+<% if @status_updated %>
+  <%= turbo_stream.remove "#{dom_id(@task)}_li" %>
+  <% puts @status_updated %>
+  <% if @task.todo? %>
+    <%= turbo_stream.append 'tasks', partial: 'tasks/task', locals: { task: @task } %>
+  <% else %>
+    <%= turbo_stream.prepend 'done-tasks', partial: 'tasks/task', locals: { task: @task } %>
+  <% end %>
 <% else %>
-  <%= turbo_stream.prepend 'done-tasks', partial: 'tasks/task', locals: { task: @task } %>
+  <%= turbo_stream.replace "#{dom_id(@task)}_li", partial: 'tasks/task', locals: { task: @task } %>
 <% end %>

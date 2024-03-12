@@ -39,7 +39,8 @@ class TasksController < ApplicationController
   def update
     respond_to do |f|
       if @task.update(task_params)
-        f.turbo_stream
+        @status_updated = !!task_params[:status]
+        f.turbo_stream { render :update }
         f.html {redirect_to @task, notice: "Task was successfully updated.", status: :see_other}
       else
         f.turbo_stream { render turbo_stream: turbo_stream.replace("#{helpers.dom_id(@task)}_form", partial: "form", locals: { task: @task }) } 
@@ -52,7 +53,7 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy!
     respond_to do |f|
-      f.turbo_stream { render turbo_stream: turbo_stream.remove(@task) }
+      f.turbo_stream { render turbo_stream: turbo_stream.remove("#{helpers.dom_id(@task)}_li") }
       f.html { redirect_to tasks_url, notice: "Task was successfully destroyed.", status: :see_other }
     end
   end
